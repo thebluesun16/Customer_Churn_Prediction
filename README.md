@@ -14,7 +14,7 @@ A machine learning project that predicts customer churn for a telecom company us
 
 **Deployment** - Best model saved as `telecom_model.pkl` and served via a Streamlit app.
 
-🚀 **Live App:** [Click here](https://churnpredictionmodel-rrxi7d6izqpafhzhnv5hzp.streamlit.app/)
+🚀 **Live App:** [Click here](https://customerchurnprediction-ks8axfopv784xvtxm7wra8.streamlit.app/)
 
 ---
 
