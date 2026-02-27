@@ -1,7 +1,6 @@
-
-#📉 Telecom Customer Churn Prediction#
+##📉 Telecom Customer Churn Prediction##
 A machine learning project that predicts customer churn for a telecom company using the IBM Telco Customer Churn dataset. The model is deployed as an interactive Streamlit web application.
-#🔍 What's Been Done
+#🔍 What's Been Done#
 Exploratory Data Analysis - Analyzed all 21 features across 7,043 customer records, visualized churn patterns across categorical and numerical variables (tenure, monthly charges, total charges), and identified key insight: customers with lower monthly charges are more likely to churn.
 Data Preprocessing - Fixed TotalCharges dtype, dropped nulls and the customerID column, and encoded all categorical features using OneHotEncoder.
 Model Training & Evaluation - Trained and compared 5 classifiers (Random Forest, SVM, Logistic Regression, KNN, Decision Tree) using GridSearchCV for hyperparameter tuning. Applied SMOTEENN to handle class imbalance and re-evaluated all models on the resampled data.
