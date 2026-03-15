@@ -10,7 +10,7 @@ import google.generativeai as genai
 st.set_page_config(page_title="Churn Predictor", page_icon="📞", layout="wide")
 
 # ── Gemini setup ──────────────────────────────────────────────
-GEMINI_API_KEY = "YOUR_GEMINI_API_KEY_HERE"  # get free key from aistudio.google.com
+GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
 genai.configure(api_key=GEMINI_API_KEY)
 gemini_model = genai.GenerativeModel("gemini-1.5-flash")
 
