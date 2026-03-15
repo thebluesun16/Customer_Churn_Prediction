@@ -1,6 +1,6 @@
 # 📉 Telecom Customer Churn Intelligence Platform
 
-An end-to-end machine learning system that predicts customer churn, explains *why* a customer is likely to leave, segments customers by risk level, and generates AI-powered retention strategies — built on the IBM Telco Customer Churn dataset and deployed as an interactive Streamlit web application.
+An end-to-end machine learning system that predicts customer churn, explains *why* a customer is likely to leave, segments customers by risk level, and generates AI-powered retention strategies - built on the IBM Telco Customer Churn dataset and deployed as an interactive Streamlit web application.
 
 ---
 
