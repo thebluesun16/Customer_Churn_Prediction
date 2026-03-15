@@ -2,5 +2,8 @@ streamlit
 numpy
 pandas
 scikit-learn
+imbalanced-learn
+shap
 matplotlib
-seaborn
+google-generativeai
+pickle5
