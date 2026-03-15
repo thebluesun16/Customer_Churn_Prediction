@@ -43,4 +43,4 @@ An end-to-end machine learning system that predicts customer churn, explains *wh
 
 ## 🛠 Tech Stack
 
-Python, Scikit-learn, Imbalanced-learn, XGBoost, SHAP, Pandas, Matplotlib, Seaborn, Streamlit, Gemini API
+Python, Scikit-learn, Imbalanced-learn, XGBoost, SHAP, Pandas, Matplotlib, Seaborn, Streamlit, Google Gemini 2.5 Flash (GenAI)
