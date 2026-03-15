@@ -12,7 +12,7 @@ st.set_page_config(page_title="Churn Predictor", page_icon="📞", layout="wide"
 # ── Gemini setup ──────────────────────────────────────────────
 GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
 genai.configure(api_key=GEMINI_API_KEY)
-gemini_model = genai.GenerativeModel("gemini-1.5-flash")
+gemini_model = genai.GenerativeModel("models/gemini-2.5-flash")
 
 # ── Load model ────────────────────────────────────────────────
 @st.cache_resource
@@ -131,38 +131,42 @@ if st.button("🔍 Predict & Analyse", use_container_width=True):
 
         # ── SHAP Explanation ──────────────────────────────────
         st.markdown("### 🧠 Why this prediction? (SHAP)")
-
         try:
-            base_clf = model.named_steps['model']
-            scaler = model.named_steps['scaler']
-            processed_scaled = scaler.transform(processed)
+    base_clf = model.named_steps['model']
+    scaler = model.named_steps['scaler']
+    processed_scaled = scaler.transform(processed)
 
-            explainer = shap.TreeExplainer(base_clf)
-            shap_values = explainer.shap_values(processed_scaled)
+    explainer = shap.TreeExplainer(base_clf)
+    shap_values = explainer.shap_values(processed_scaled)
 
-            # Pick churn class shap values
-            sv = shap_values[1][0] if isinstance(shap_values, list) else shap_values[0]
+    # Handle (1, 45, 2) shape — single customer, 45 features, 2 classes
+    sv_raw = np.array(shap_values)
+    if sv_raw.ndim == 3:
+        sv = sv_raw[0, :, 1]   # shape (45,) — churn class
+    elif sv_raw.ndim == 2:
+        sv = sv_raw[0]          # shape (45,)
+    else:
+        sv = sv_raw
 
-            shap_df = pd.DataFrame({
-                'Feature': feature_columns,
-                'SHAP Value': sv
-            }).reindex(pd.Series(sv).abs().sort_values(ascending=False).index)
-            shap_df = shap_df.head(10)
+    shap_df = pd.DataFrame({
+        'Feature': feature_columns,
+        'SHAP Value': sv
+    }).sort_values('SHAP Value', key=abs, ascending=False).head(10)
 
-            colors = ['#e74c3c' if v > 0 else '#2ecc71' for v in shap_df['SHAP Value']]
+    colors = ['#e74c3c' if v > 0 else '#2ecc71' for v in shap_df['SHAP Value']]
 
-            fig, ax = plt.subplots(figsize=(8, 4))
-            ax.barh(shap_df['Feature'], shap_df['SHAP Value'], color=colors)
-            ax.axvline(0, color='black', linewidth=0.8)
-            ax.set_xlabel("SHAP Value (Red = increases churn risk, Green = decreases)")
-            ax.set_title("Top Features Driving This Prediction")
-            ax.invert_yaxis()
-            plt.tight_layout()
-            st.pyplot(fig)
-            st.caption("Red bars push towards churn. Green bars push away from churn.")
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.barh(shap_df['Feature'], shap_df['SHAP Value'], color=colors)
+    ax.axvline(0, color='black', linewidth=0.8)
+    ax.set_xlabel("SHAP Value (Red = increases churn risk, Green = decreases)")
+    ax.set_title("Top Features Driving This Prediction")
+    ax.invert_yaxis()
+    plt.tight_layout()
+    st.pyplot(fig)
+    st.caption("Red bars push towards churn. Green bars push away from churn.")
 
-        except Exception as shap_err:
-            st.info(f"SHAP explanation unavailable for this model type: {shap_err}")
+except Exception as shap_err:
+    st.info(f"SHAP explanation unavailable: {shap_err}")
 
         st.divider()
 
